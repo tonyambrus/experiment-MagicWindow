@@ -10,13 +10,13 @@ Shader "MagicWindow/CubeSDF"
 	SubShader
 	{
 		Tags { "RenderType"="Transparent" "Queue"="Transparent"}
-      Cull Off
       ZWrite Off
       Blend SrcAlpha OneMinusSrcAlpha
 
 		Pass
 		{
-		CGPROGRAM
+      Cull Front
+      CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
 
@@ -47,10 +47,50 @@ Shader "MagicWindow/CubeSDF"
 			half4 frag(v2f i) : COLOR
 			{
             float sdf = tex2D(_MainTex, i.uv) - 0.5;
-            float v = saturate(sdf * _Range.x + _Range.y);
+            float v = saturate(sdf * _Range.z + _Range.w);
 				return v * _Color;
 			}
 		ENDCG
 		}
+
+      Pass
+      {
+      Cull Back
+      CGPROGRAM
+         #pragma vertex vert
+         #pragma fragment frag
+
+         struct appdata
+         {
+            float4 vertex : POSITION;
+            float2 uv : TEXCOORD0;
+         };
+
+         struct v2f
+         {
+            float4 pos : SV_POSITION;
+            float2 uv : TEXCOORD0;
+         };
+
+         v2f vert(appdata v)
+         {
+            v2f o;
+            o.pos = UnityObjectToClipPos(v.vertex);
+            o.uv = v.uv;
+            return o;
+         }
+
+         sampler2D _MainTex;
+         float4 _Color;
+         float4 _Range;
+
+         half4 frag(v2f i) : COLOR
+         {
+            float sdf = tex2D(_MainTex, i.uv) - 0.5;
+            float v = saturate(sdf * _Range.x + _Range.y);
+            return v * _Color;
+         }
+      ENDCG
+      }
 	}
 }

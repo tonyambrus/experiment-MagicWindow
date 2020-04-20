@@ -2,6 +2,7 @@
 {
    Properties
    {
+      _Color("Color", color) = (0,0,0,0)
       _StencilMask("Stencil", Int) = 0
       [KeywordEnum(Always, Never, Less, Equal, LEqual, Greater, NotEqual, GEqual, Always)]
       _StencilComp("StencilComp", Int) = 3 // Equal
@@ -47,9 +48,11 @@
             return o;
          }
 
+         float4 _Color;
+
          half4 frag(v2f i) : COLOR
          {
-            return half4(0,1,0,1);
+            return _Color;
          }
       ENDCG
       }
