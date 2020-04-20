@@ -52,9 +52,6 @@ namespace MagicWindow
 
         public void GotoState(EState newState)
         {
-            //StopAllCoroutines();
-            //StartCoroutine(GetAnimCoroutine(state).GetEnumerator());
-
             state = newState;
             switch (newState)
             {
@@ -138,68 +135,6 @@ namespace MagicWindow
 
                 preview.gameObject.SetActive(previewLerp > 0);
             }
-        }
-
-        private IEnumerable GetAnimCoroutine(EState state)
-        {
-            var co = Enumerable.Empty<object>();
-
-            if (state == EState.Unstencilled)
-            {
-                return co
-                    .Concat(AnimIcon(false))
-                    .Concat(AnimVolume(false))
-                    .Concat(AnimToStencil(false));
-            }
-
-            // all other states require stencil
-            if (!magicWindow.UseStencil)
-            {
-                SetWindowDepth(1);
-                co = AnimToStencil(true);
-            }
-
-            if (state != EState.Icon)
-            {
-                co = co.Concat(AnimIcon(false));
-            }
-
-            switch (state)
-            {
-                case EState.Icon:
-                    co = co
-                        .Concat(AnimVolume(true))
-                        .Concat(AnimIcon(true));
-                    break;
-                case EState.Window: co = co.Concat(AnimVolume(true)); break;
-                case EState.Volume: co = co.Concat(AnimVolume(false)); break;
-            }
-
-            return co;
-        }
-
-        private IEnumerable<object> AnimVolume(bool toWindow)
-        {
-            enableVolume = toWindow;
-            while (windowDepthLerp != (enableVolume ? 1 : 0))
-            {
-                yield return true;
-            }
-        }
-
-        private IEnumerable<object> AnimIcon(bool toIcon)
-        {
-            enableIcon = toIcon;
-            while (scaleLerp != (enableIcon ? 1 : 0))
-            {
-                yield return true;
-            }
-        }
-
-        private IEnumerable<object> AnimToStencil(bool stencil)
-        {
-            enableStencil = stencil;
-            yield return true;
         }
 
         private void TickScaleTowards(float target)
