@@ -23,8 +23,8 @@ namespace MagicWindow
         public Transform iconPivot;
         public Renderer preview;
 
-        public EState nextState = EState.Icon;
-        private EState state = EState.Volume;
+        public EState nextState = EState.Unstencilled;
+        private EState state = EState.Unstencilled;
         public bool enablePreview;
         public bool enablePreviewFill;
         public bool enableVolume;
@@ -175,53 +175,21 @@ namespace MagicWindow
             yield return true;
         }
 
-        public void GotoState(EState nextState)
+        public void GotoState(EState newState)
         {
-            this.nextState = nextState;
-            state = nextState;
-            StopAllCoroutines();
-            StartCoroutine(GetAnimCoroutine(nextState).GetEnumerator());
-#if false
-            state = nextState;
-            switch (nextState)
+            if (state != newState)
             {
-                case EState.Unstencilled:
-                    enablePreview = false;
-                    enableVolume = true;
-                    enableStencil = false;
-                    enableIcon = false;
-                    break;
-
-                case EState.Preview:
-                    enableIcon = false;
-                    enablePreview = true;
-                    break;
-
-                case EState.Volume:
-                    enableStencil = true;
-                    enableIcon = false;
-                    enableVolume = true;
-                    break;
-
-                case EState.Window:
-                    enablePreview = false;
-                    enableStencil = true;
-                    enableIcon = false;
-                    enableVolume = false;
-                    break;
-
-                case EState.Icon:
-                    enablePreview = false;
-                    enableStencil = true;
-                    enableIcon = true;
-                    enableVolume = false;
-                    break;
+                nextState = newState;
+                state = newState;
+                StopAllCoroutines();
+                StartCoroutine(GetAnimCoroutine(newState).GetEnumerator());
             }
-#endif
         }
 
         private void Update()
         {
+            GotoState(nextState);
+
             if (Input.GetKeyDown(KeyCode.I))
             {
                 GotoState(EState.Icon);

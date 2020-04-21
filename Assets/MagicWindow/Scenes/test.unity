@@ -131,7 +131,7 @@ PrefabInstance:
     - target: {fileID: 2529519590855937676, guid: 1ca12d56a8377b842b959bdc49dcba9c,
         type: 3}
       propertyPath: nextState
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7975192214442424155, guid: 1ca12d56a8377b842b959bdc49dcba9c,
         type: 3}
@@ -1390,7 +1390,7 @@ PrefabInstance:
     - target: {fileID: 2529519590855937676, guid: 1ca12d56a8377b842b959bdc49dcba9c,
         type: 3}
       propertyPath: nextState
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7975192214442424155, guid: 1ca12d56a8377b842b959bdc49dcba9c,
         type: 3}
@@ -2873,6 +2873,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2529519590855937676, guid: 1ca12d56a8377b842b959bdc49dcba9c,
+        type: 3}
+      propertyPath: nextState
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7975192214442424155, guid: 1ca12d56a8377b842b959bdc49dcba9c,
         type: 3}
       propertyPath: m_Name
